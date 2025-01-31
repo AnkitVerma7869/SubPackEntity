@@ -1,8 +1,6 @@
-"use client";
 
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import { TableFormProps } from "../../types";
 
 interface Attribute {
   name: string;
@@ -57,7 +55,7 @@ const predefinedEntities: Record<string, Attribute[]> = {
   ]
 };
 
-export default function TableForm({ onCancel, onSave }: TableFormProps) {
+export default function TableForm({ onSave }: { onSave: () => void }) {
   const [entityName, setEntityName] = useState("");
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [currentAttribute, setCurrentAttribute] = useState<Attribute>({
@@ -138,7 +136,7 @@ export default function TableForm({ onCancel, onSave }: TableFormProps) {
     };
 
     try {
-      const response = await fetch('/api/saveEntity', {
+      const response = await fetch('http://192.168.1.18:3030/api/table/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +161,7 @@ export default function TableForm({ onCancel, onSave }: TableFormProps) {
   };
 
   return (
-    <div className="p-6.5">
+    <div>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         {/* Left Column - Entity Setup */}
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -369,13 +367,13 @@ export default function TableForm({ onCancel, onSave }: TableFormProps) {
                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                           {attr.constraints}
                         </td>
-                        <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                          <div className="flex items-center space-x-3.5">
-                            <button onClick={() => handleEditAttribute(index)}>
-                              <Pencil className="hover:text-primary" />
+                        <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark custom-icon-btn">
+                          <div className="flex items-center space-x-3 custom-icon-btn">
+                            <button onClick={() => handleEditAttribute(index)} >
+                              <Pencil className="hover:text-primary custom-icon-btn" />
                             </button>
                             <button onClick={() => handleDeleteAttribute(index)}>
-                              <Trash2 className="hover:text-meta-1" />
+                              <Trash2 className="hover:text-meta-1 custom-icon-btn" />
                             </button>
                           </div>
                         </td>
